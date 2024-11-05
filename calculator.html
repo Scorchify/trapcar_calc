@@ -1,87 +1,67 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Mousetrap Car Theoretical Data Calculator</title>
-        <link rel="stylesheet" type="text/css" href="calculator.css">
-        <script src="calculator.js"></script>
-    </head>
+<head>
+    <title>Mousetrap Car Theoretical Data Calculator</title>
+    <link rel="stylesheet" type="text/css" href="calculator.css">
+    <script src="calculator.js"></script>
+</head>
 
-    <body>
-        <h1>Mousetrap Car Theoretical Data Calculator</h1>
-        <li> This calculator will help you calculate the theoretical data for your mousetrap car. </li>
-        <li> Please fill out the form below and select the data you want to calculate. </li>
-        <li> The calculator will then calculate the data for you. </li>
-        <br>
+<body>
+    <h1>Mousetrap Car Theoretical Data Calculator</h1>
+    <ul>
+        <li>This calculator will help you calculate the theoretical data for your standard victor mousetrap car.</li>
+        <li>Please fill out the form below and select the data you want to calculate.</li>
+        <li>The calculator will then calculate the data for you.</li>
+    </ul>
 
-        <form id="calculator">
-            <!--Mass-->
-            <div class="form-body">
-                <div class="input-field">
-            <label for="mass">Mass of the mousetrap car (lb):</label>
-            <input type="text" id="mass" name="mass" required> </input>
-            <br>
-        </div>
-            <!--Back Radius-->
+    <form id="calculator" onsubmit="return validateForm()">
+        <!-- Mass -->
+        <div class="form-body">
             <div class="input-field">
-            <label for="back_radius">Radius of the back wheel (in):</label>
-            <input type="text" id="back_radius" name="back_radius" required> </input>
-            <br>
-        </div>
-
-            <!--Back Wheels ct-->
-            <div class="input-field">
-            <label for="back_wheels_ct">Number of back wheels:</label>
-            <input type="text" id="back_wheels_ct" name="back_wheels_ct" required> </input>
-            <br>
-        </div>
-
-            <!--Front Radius-->
-            <div class="input-field">
-            <label for="front_radius">Radius of the front wheels (in):</label>
-            <input type="text" id="front_radius" name="front_radius" required> </input>
-            <br>
-        </div>
-
-
-            <!--Front Wheels ct-->
-            <div class="input-field">
-            <label for="front_wheels_ct">Number of front wheels:</label>
-            <input type="text" id="front_wheels_ct" name="front_wheels_ct" required> </input>
-            <br>
-        </div>
-
-            <!--lever length-->
-
-            <div class="input-field">
-            <label for="lever_length">Lever length (in):</label>
-            <input type="text" id="lever_length" name="lever_length" required> </input>
-            <br>
-        </div>
-
-            <!--Tested Coeffecient of Friction-->
-            <div class="input-field">
-            <label for="friction">Tested Coeffecient of Friction:</label>
-            <input type="text" id="friction" name="friction"> </input>
-            <br>
-        </div>
-
-            <!--Distance-->
-            <div class="input-field">
-                <label for="distance">Distance to travel (ft):</label>
-                <input type="text" id="distance" name="distance" oninput="toggleDistanceCheckbox()"> </input>
-                <br>
+                <label for="mass">Mass of the mousetrap car (lb):</label>
+                <input type="text" id="mass" name="mass" required />
             </div>
 
-        <!--Checkboxes-->
-        <label for="check">Check the boxes for the data you want to calculate:</label> <br>
-        <input type="checkbox" id="time" name="time">time_to_complete </input>  <br>
-        <input type="checkbox" id="Max" name="Max">Max (velocity, acceleration) </input> <br> 
-        <input type="checkbox" id="distance_traveled" name="distance_traveled">Distance Traveled</input> <br> 
-        
-        <!--Submit Button-->
-        <input type="submit" value="Calculate"> </input>
+            <!-- Back Radius -->
+            <div class="input-field">
+                <label for="back_radius">Radius of the back wheel (in):</label>
+                <input type="text" id="back_radius" name="back_radius" required />
+            </div>
+
+            <!-- Axle Radius -->
+            <div class="input-field">
+                <label for="axle_radius">Radius of the drive axle (in):</label>
+                <input type="text" id="axle_radius" name="axle_radius" required />
+            </div>
+
+            <!-- Lever Length -->
+            <div class="input-field">
+                <label for="lever_length">Lever length (in):</label>
+                <input type="text" id="lever_length" name="lever_length" required />
+            </div>
+
+            <!-- Tested Coefficient of Friction -->
+            <div class="input-field">
+                <label for="friction">Tested Coefficient of Friction:</label>
+                <input type="text" id="friction" name="friction" required />
+            </div>
+
+            <!-- Distance -->
+            <div class="input-field">
+                <label for="distance">Distance to travel (ft):</label>
+                <input type="text" id="distance" name="distance" required />
+            </div>
+
+            <!-- Checkboxes -->
+            <label for="check">Check the boxes for the data you want to calculate:</label><br>
+            <input type="checkbox" id="time" name="time"> Time to Complete <br>
+            <input type="checkbox" id="Max" name="Max"> Max (velocity, acceleration) <br>
+
+            <!-- Submit Button -->
+            <input type="button" value="Calculate" onclick="calculate()" />
+        </div>
     </form>
-        
+
     <script>
         function validateForm() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -94,19 +74,53 @@
             return false;
         }
 
-        function toggleDistanceCheckbox() {
-            const distanceInput = document.getElementById('distance');
-            const distanceCheckbox = document.getElementById('distance_traveled');
-            if (distanceInput.value.trim() !== "") {
-                distanceCheckbox.disabled = true;
-            } else {
-                distanceCheckbox.disabled = false;
-            }
-        }
-
         function calculate() {
-            
+            // Get values
+            const mass = parseFloat(document.getElementById('mass').value);
+            const backRadius = parseFloat(document.getElementById('back_radius').value);
+            const axleRadius = parseFloat(document.getElementById('axle_radius').value);
+            const leverLength = parseFloat(document.getElementById('lever_length').value);
+            const friction = parseFloat(document.getElementById('friction').value);
+            const distance = parseFloat(document.getElementById('distance').value);
+
+            if (isNaN(mass) || isNaN(backRadius) || isNaN(axleRadius) || isNaN(leverLength) || isNaN(friction) || isNaN(distance)) {
+                alert("Please enter valid numeric values.");
+                return;
+            }
+
+            // Constants
+            const victor_arm = 2; // inches
+            const gravity = 9.80665; // m/s^2
+            const pi = Math.PI;
+            const stiffness = 1.8; // newtons per meter
+
+            // Conversions
+            const massKg = mass * 0.453592;
+
+            // Mechanical Advantage Calculations
+            const mousetrapMA = victor_arm / leverLength;
+            const wheelMA = axleRadius / backRadius;
+            const totalMA = mousetrapMA * wheelMA;
+
+            // Force Calculations
+            const Ff = friction * massKg * gravity;
+            const d = pi * 2 * leverLength;
+            const Uk = (stiffness * pi ** 2) / 2;
+            const Fk = Uk / d;
+
+            // Output data
+            const max_acceleration = (Fk - Ff) / massKg;
+            const max_velocity = Math.sqrt(2 * max_acceleration * distance);
+            const time = Math.sqrt((2 * distance) / max_acceleration);
+
+            // Store results in local storage
+            localStorage.setItem("max_acceleration", max_acceleration.toFixed(2));
+            localStorage.setItem("max_velocity", max_velocity.toFixed(2));
+            localStorage.setItem("time", time.toFixed(2));
+
+            // Redirect to results page
+            window.location.href = 'results.html';
         }
     </script>
-    </body>
+</body>
 </html>

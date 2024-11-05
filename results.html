@@ -1,9 +1,26 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title> Results Page </title>
-    </head>
-    <body>
+<head>
+    <title>Results Page</title>
+    <link rel="stylesheet" type="text/css" href="calculator.css">
+</head>
+<body>
+    <h1>Results</h1>
+    <div class="results-container">
+        <label for="max_acceleration">Max Acceleration (m/s²):</label>
+        <input type="text" id="max_acceleration" name="max_acceleration" readonly /><br>
 
-    </body>
+        <label for="max_velocity">Max Velocity (m/s):</label>
+        <input type="text" id="max_velocity" name="max_velocity" readonly /><br>
+
+        <label for="time">Time (s):</label>
+        <input type="text" id="time" name="time" readonly /><br>
+
+        <script>
+            document.getElementById("max_acceleration").value = localStorage.getItem("max_acceleration") || "N/A";
+            document.getElementById("max_velocity").value = localStorage.getItem("max_velocity") || "N/A";
+            document.getElementById("time").value = localStorage.getItem("time") || "N/A";
+        </script>
+    </div>
+</body>
 </html>
